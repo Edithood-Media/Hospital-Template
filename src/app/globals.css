@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fafaf7;
+  --foreground: #101010;
+  --muted: #5f6b76;
+  --surface: #ffffff;
+  --line: #dde3e8;
+  --medical-blue: #0b4f8a;
+  --sky: #ddf2ff;
+  --teal: #3ab7a5;
+  --ink: #050505;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-medical-blue: var(--medical-blue);
+  --color-sky: var(--sky);
+  --color-teal: var(--teal);
+  --color-ink: var(--ink);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-jakarta), Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(58, 183, 165, 0.25);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 24px 80px rgba(11, 79, 138, 0.14);
+  backdrop-filter: blur(18px);
+}
+
+.medical-grid {
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(221, 242, 255, 0.95), transparent 34%),
+    radial-gradient(circle at 82% 22%, rgba(58, 183, 165, 0.16), transparent 28%),
+    linear-gradient(rgba(11, 79, 138, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11, 79, 138, 0.045) 1px, transparent 1px);
+  background-size: auto, auto, 44px 44px, 44px 44px;
+}
+
+.staff-marquee {
+  animation: staff-marquee 42s linear infinite;
+}
+
+.staff-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes staff-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 12px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .staff-marquee {
+    animation: none;
+  }
+}

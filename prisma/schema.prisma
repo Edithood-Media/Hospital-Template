@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Appointment {
+  id            String            @id @default(cuid())
+  patientName   String
+  phone         String
+  email         String?
+  department    String
+  preferredDate DateTime
+  preferredTime String?
+  message       String?
+  status        AppointmentStatus @default(NEW)
+  internalNotes String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@index([status])
+  @@index([department])
+  @@index([preferredDate])
+}
+
+model BlogPost {
+  id                String     @id @default(cuid())
+  title             String
+  slug              String     @unique
+  excerpt           String
+  content           String
+  category          String
+  featuredImage     String?
+  seoTitle          String?
+  seoDescription    String?
+  authorDisplayName String     @default("Shree Shivaya Hospital")
+  status            BlogStatus @default(DRAFT)
+  publishedAt       DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  @@index([status])
+  @@index([category])
+  @@index([publishedAt])
+}
+
+enum AppointmentStatus {
+  NEW
+  CONTACTED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+}
