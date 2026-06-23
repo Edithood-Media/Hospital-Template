@@ -46,6 +46,35 @@ export const appointmentStatusSchema = z.object({
   internalNotes: z.string().trim().max(1000).optional(),
 });
 
+const booleanFromForm = z.union([z.literal("on"), z.literal("")]).optional();
+
+export const serviceSchema = z.object({
+  title: z.string().trim().min(2, "Title is required").max(120),
+  description: z.string().trim().min(8, "Description is required").max(320),
+  iconKey: z.string().trim().min(2).max(80),
+  sortOrder: z.coerce.number().int().min(0).max(999),
+  isVisible: booleanFromForm,
+});
+
+export const facilitySchema = z.object({
+  title: z.string().trim().min(2, "Title is required").max(140),
+  label: z.string().trim().min(2, "Label is required").max(80),
+  image: z.string().trim().url("Enter a valid image URL"),
+  iconKey: z.string().trim().min(2).max(80),
+  sortOrder: z.coerce.number().int().min(0).max(999),
+  isVisible: booleanFromForm,
+});
+
+export const staffProfileSchema = z.object({
+  name: z.string().trim().min(2, "Name is required").max(120),
+  role: z.string().trim().min(2, "Role is required").max(160),
+  detail: z.string().trim().min(8, "Description is required").max(320),
+  image: z.string().trim().url("Enter a valid image URL"),
+  department: z.string().trim().min(2, "Department is required").max(120),
+  sortOrder: z.coerce.number().int().min(0).max(999),
+  isVisible: booleanFromForm,
+});
+
 export function slugify(value: string) {
   return value
     .toLowerCase()

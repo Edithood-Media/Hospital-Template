@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { doctors, facilities, services } from "../src/lib/site-data";
 
 function getDatabaseUrl() {
   return process.env.DATABASE_URL ?? "file:./dev.db";
@@ -94,6 +95,39 @@ async function main() {
           message: "Routine consultation.",
         },
       ],
+    });
+  }
+
+  if ((await prisma.service.count()) === 0) {
+    await prisma.service.createMany({
+      data: services.map((service, index) => ({
+        ...service,
+        iconKey: ["first-aid", "doctor", "clinic", "heart", "test-tube", "calendar"][index] ?? "clinic",
+        sortOrder: index,
+      })),
+    });
+  }
+
+  if ((await prisma.facility.count()) === 0) {
+    await prisma.facility.createMany({
+      data: facilities.map((facility, index) => ({
+        ...facility,
+        iconKey: ["ambulance", "bed", "hospital", "medicine", "lab", "xray", "clean", "parking"][index] ?? "hospital",
+        sortOrder: index,
+      })),
+    });
+  }
+
+  if ((await prisma.staffProfile.count()) === 0) {
+    await prisma.staffProfile.createMany({
+      data: doctors.map((doctor, index) => ({
+        name: doctor.name,
+        role: doctor.role,
+        detail: doctor.detail,
+        image: doctor.image,
+        department: doctor.status,
+        sortOrder: index,
+      })),
     });
   }
 }

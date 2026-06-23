@@ -5,11 +5,24 @@ import { formatDate } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 
 export default async function AdminDashboardPage() {
-  const [appointments, newAppointments, publishedPosts, draftPosts, recentAppointments, recentPosts] = await Promise.all([
+  const [
+    appointments,
+    newAppointments,
+    publishedPosts,
+    draftPosts,
+    services,
+    facilities,
+    staffProfiles,
+    recentAppointments,
+    recentPosts,
+  ] = await Promise.all([
     prisma.appointment.count(),
     prisma.appointment.count({ where: { status: "NEW" } }),
     prisma.blogPost.count({ where: { status: BlogStatus.PUBLISHED } }),
     prisma.blogPost.count({ where: { status: BlogStatus.DRAFT } }),
+    prisma.service.count(),
+    prisma.facility.count(),
+    prisma.staffProfile.count(),
     prisma.appointment.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
     prisma.blogPost.findMany({ orderBy: { updatedAt: "desc" }, take: 5 }),
   ]);
@@ -19,6 +32,9 @@ export default async function AdminDashboardPage() {
     { label: "New Requests", value: newAppointments, href: "/admin/appointments" },
     { label: "Published Blogs", value: publishedPosts, href: "/admin/blogs" },
     { label: "Draft Blogs", value: draftPosts, href: "/admin/blogs" },
+    { label: "Services", value: services, href: "/admin/services" },
+    { label: "Facilities", value: facilities, href: "/admin/facilities" },
+    { label: "Staff Profiles", value: staffProfiles, href: "/admin/staff" },
   ];
 
   return (

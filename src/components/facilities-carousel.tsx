@@ -17,20 +17,27 @@ import {
   XRayIcon,
 } from "@hugeicons/core-free-icons";
 
-import { facilities } from "@/lib/site-data";
+type FacilityItem = {
+  id: string;
+  title: string;
+  label: string;
+  image: string;
+  iconKey: string;
+};
 
-const facilityIcons = [
-  AmbulanceIcon,
-  BedIcon,
-  Hospital01Icon,
-  MedicineBottle01Icon,
-  TestTube01Icon,
-  XRayIcon,
-  CleanIcon,
-  CarParking01Icon,
-];
+const facilityIcons = {
+  ambulance: AmbulanceIcon,
+  bed: BedIcon,
+  hospital: Hospital01Icon,
+  medicine: MedicineBottle01Icon,
+  lab: TestTube01Icon,
+  xray: XRayIcon,
+  clean: CleanIcon,
+  parking: CarParking01Icon,
+  building: Building03Icon,
+};
 
-export function FacilitiesCarousel() {
+export function FacilitiesCarousel({ facilities }: { facilities: FacilityItem[] }) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dragState = useRef({ isDown: false, startX: 0, scrollLeft: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -93,7 +100,7 @@ export function FacilitiesCarousel() {
           setIsDragging(false);
         }}
       >
-        {facilities.map((facility, index) => (
+        {facilities.map((facility) => (
           <article
             data-facility-card
             key={facility.title}
@@ -114,7 +121,7 @@ export function FacilitiesCarousel() {
               </span>
               <div>
                 <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-medical-blue">
-                  <HugeiconsIcon icon={facilityIcons[index] ?? Building03Icon} size={24} strokeWidth={1.7} />
+                  <HugeiconsIcon icon={facilityIcons[facility.iconKey as keyof typeof facilityIcons] ?? Building03Icon} size={24} strokeWidth={1.7} />
                 </span>
                 <h3 className="text-2xl font-semibold tracking-tight">{facility.title}</h3>
               </div>

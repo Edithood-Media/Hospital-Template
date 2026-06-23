@@ -17,10 +17,17 @@ import { FacilitiesCarousel } from "@/components/facilities-carousel";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { StaffCarousel } from "@/components/staff-carousel";
-import { getLatestPublishedPosts } from "@/lib/data";
-import { services } from "@/lib/site-data";
+import { getHomepageFacilities, getHomepageServices, getHomepageStaffProfiles, getLatestPublishedPosts } from "@/lib/data";
 
 const serviceIcons = [FirstAidKitIcon, Doctor01Icon, ClinicIcon, HeartCheckIcon, TestTube01Icon, Calendar03Icon];
+const serviceIconMap = {
+  "first-aid": FirstAidKitIcon,
+  doctor: Doctor01Icon,
+  clinic: ClinicIcon,
+  heart: HeartCheckIcon,
+  "test-tube": TestTube01Icon,
+  calendar: Calendar03Icon,
+};
 
 function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -31,7 +38,12 @@ function SectionEyebrow({ children }: { children: React.ReactNode }) {
 }
 
 export default async function Home() {
-  const posts = await getLatestPublishedPosts(3);
+  const [posts, services, facilities, staff] = await Promise.all([
+    getLatestPublishedPosts(3),
+    getHomepageServices(),
+    getHomepageFacilities(),
+    getHomepageStaffProfiles(),
+  ]);
 
   return (
     <>
@@ -113,7 +125,7 @@ export default async function Home() {
               {services.map((service, index) => (
                 <article key={service.title} className="group rounded-[2rem] border border-line bg-background p-7 transition hover:-translate-y-1 hover:border-sky hover:bg-sky/60">
                   <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-sm font-bold text-medical-blue shadow-sm">
-                    <HugeiconsIcon icon={serviceIcons[index] ?? ClinicIcon} size={24} strokeWidth={1.7} />
+                    <HugeiconsIcon icon={serviceIconMap[service.iconKey as keyof typeof serviceIconMap] ?? serviceIcons[index] ?? ClinicIcon} size={24} strokeWidth={1.7} />
                   </span>
                   <h3 className="mt-8 text-2xl font-semibold tracking-tight text-ink">{service.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-muted">{service.description}</p>
@@ -132,7 +144,7 @@ export default async function Home() {
               </div>
               <p className="max-w-md text-sm leading-6 text-muted">A calm environment supported by practical amenities for patients and families.</p>
             </div>
-            <FacilitiesCarousel />
+            <FacilitiesCarousel facilities={facilities} />
           </div>
         </section>
 
@@ -147,7 +159,7 @@ export default async function Home() {
                 A calm, capable care team represented in horizontal profile cards that keep the section alive without making the page feel busy.
               </p>
             </div>
-            <StaffCarousel />
+            <StaffCarousel staff={staff} />
           </div>
         </section>
 

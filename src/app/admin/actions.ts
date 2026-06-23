@@ -7,7 +7,15 @@ import { redirect } from "next/navigation";
 import { BlogStatus } from "@/generated/prisma/enums";
 import { createSession, destroySession, getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { appointmentStatusSchema, blogSchema, loginSchema, slugify } from "@/lib/validation";
+import {
+  appointmentStatusSchema,
+  blogSchema,
+  facilitySchema,
+  loginSchema,
+  serviceSchema,
+  slugify,
+  staffProfileSchema,
+} from "@/lib/validation";
 
 type ActionState = {
   ok?: boolean;
@@ -162,4 +170,115 @@ export async function deleteAppointmentAction(formData: FormData) {
     await prisma.appointment.delete({ where: { id } });
   }
   revalidatePath("/admin/appointments");
+}
+
+export async function saveServiceAction(id: string | null, _state: ActionState, formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+
+  const result = serviceSchema.safeParse({
+    title: formValue(formData, "title"),
+    description: formValue(formData, "description"),
+    iconKey: formValue(formData, "iconKey"),
+    sortOrder: formValue(formData, "sortOrder"),
+    isVisible: formValue(formData, "isVisible"),
+  });
+
+  if (!result.success) {
+    return { ok: false, message: "Please complete all required service fields." };
+  }
+
+  const data = { ...result.data, isVisible: result.data.isVisible === "on" };
+
+  if (id) {
+    await prisma.service.update({ where: { id }, data });
+  } else {
+    await prisma.service.create({ data });
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/services");
+  redirect("/admin/services");
+}
+
+export async function deleteServiceAction(formData: FormData) {
+  await requireAdmin();
+  const id = formValue(formData, "id");
+  if (id) await prisma.service.delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/admin/services");
+}
+
+export async function saveFacilityAction(id: string | null, _state: ActionState, formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+
+  const result = facilitySchema.safeParse({
+    title: formValue(formData, "title"),
+    label: formValue(formData, "label"),
+    image: formValue(formData, "image"),
+    iconKey: formValue(formData, "iconKey"),
+    sortOrder: formValue(formData, "sortOrder"),
+    isVisible: formValue(formData, "isVisible"),
+  });
+
+  if (!result.success) {
+    return { ok: false, message: "Please complete all required facility fields." };
+  }
+
+  const data = { ...result.data, isVisible: result.data.isVisible === "on" };
+
+  if (id) {
+    await prisma.facility.update({ where: { id }, data });
+  } else {
+    await prisma.facility.create({ data });
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/facilities");
+  redirect("/admin/facilities");
+}
+
+export async function deleteFacilityAction(formData: FormData) {
+  await requireAdmin();
+  const id = formValue(formData, "id");
+  if (id) await prisma.facility.delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/admin/facilities");
+}
+
+export async function saveStaffProfileAction(id: string | null, _state: ActionState, formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+
+  const result = staffProfileSchema.safeParse({
+    name: formValue(formData, "name"),
+    role: formValue(formData, "role"),
+    detail: formValue(formData, "detail"),
+    image: formValue(formData, "image"),
+    department: formValue(formData, "department"),
+    sortOrder: formValue(formData, "sortOrder"),
+    isVisible: formValue(formData, "isVisible"),
+  });
+
+  if (!result.success) {
+    return { ok: false, message: "Please complete all required staff fields." };
+  }
+
+  const data = { ...result.data, isVisible: result.data.isVisible === "on" };
+
+  if (id) {
+    await prisma.staffProfile.update({ where: { id }, data });
+  } else {
+    await prisma.staffProfile.create({ data });
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/staff");
+  redirect("/admin/staff");
+}
+
+export async function deleteStaffProfileAction(formData: FormData) {
+  await requireAdmin();
+  const id = formValue(formData, "id");
+  if (id) await prisma.staffProfile.delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/admin/staff");
 }

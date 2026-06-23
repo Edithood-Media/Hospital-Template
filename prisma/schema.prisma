@@ -56,6 +56,51 @@ model BlogPost {
   @@index([publishedAt])
 }
 
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  iconKey     String   @default("clinic")
+  sortOrder   Int      @default(0)
+  isVisible   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isVisible])
+  @@index([sortOrder])
+}
+
+model Facility {
+  id        String   @id @default(cuid())
+  title     String
+  label     String
+  image     String
+  iconKey   String   @default("hospital")
+  sortOrder Int      @default(0)
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isVisible])
+  @@index([sortOrder])
+}
+
+model StaffProfile {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  detail    String
+  image     String
+  department String
+  sortOrder Int      @default(0)
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isVisible])
+  @@index([sortOrder])
+}
+
 enum AppointmentStatus {
   NEW
   CONTACTED
