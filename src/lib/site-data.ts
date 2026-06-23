@@ -63,6 +63,30 @@ export const facilities = [
     image:
       "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80",
   },
+  {
+    title: "In-House Laboratory",
+    label: "Lab Tests",
+    image:
+      "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    title: "Digital X-Ray And Imaging",
+    label: "Imaging",
+    image:
+      "https://images.unsplash.com/photo-1511174511562-5f7f18b874f8?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    title: "Clean Waiting Area",
+    label: "Comfort",
+    image:
+      "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    title: "Patient Parking Access",
+    label: "Access",
+    image:
+      "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=1200&q=80",
+  },
 ];
 
 export const doctors = [
@@ -71,7 +95,7 @@ export const doctors = [
     role: "General Medicine & Emergency Care",
     detail: "Experienced doctor focused on clear guidance and timely treatment.",
     handle: "dr.aarav",
-    status: "OPD Available",
+    status: "General Medicine",
     image:
       "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=900&q=85",
   },
@@ -80,7 +104,7 @@ export const doctors = [
     role: "Maternity & Family Care",
     detail: "Compassionate support for mothers, families, and planned consultations.",
     handle: "dr.kavya",
-    status: "Consultation Open",
+    status: "Maternity Care",
     image:
       "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=900&q=85",
   },
@@ -89,7 +113,7 @@ export const doctors = [
     role: "Surgery & Critical Care",
     detail: "Calm surgical care with attention to safety and recovery planning.",
     handle: "dr.rohan",
-    status: "On Duty",
+    status: "Surgery",
     image:
       "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=900&q=85",
   },
@@ -98,7 +122,7 @@ export const doctors = [
     role: "Patient Care & Recovery",
     detail: "Attentive staff supporting comfort, safety, and communication.",
     handle: "nurse.priya",
-    status: "Care Team",
+    status: "Patient Care",
     image:
       "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=85",
   },

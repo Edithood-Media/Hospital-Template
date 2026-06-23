@@ -64,6 +64,15 @@ html {
   animation: staff-marquee 42s linear infinite;
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .staff-marquee:hover {
   animation-play-state: paused;
 }
@@ -74,7 +83,7 @@ html {
   }
 
   to {
-    transform: translateX(calc(-50% - 12px));
+    transform: translateX(-50%);
   }
 }
 

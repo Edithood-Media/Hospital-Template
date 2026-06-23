@@ -2,29 +2,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  AmbulanceIcon,
-  ArrowRight02Icon,
   Calendar03Icon,
   ClinicIcon,
   Doctor01Icon,
   FirstAidKitIcon,
   HeartCheckIcon,
-  Hospital01Icon,
   HospitalBed01Icon,
-  MedicineBottle01Icon,
   Shield01Icon,
   TestTube01Icon,
 } from "@hugeicons/core-free-icons";
 
 import { AppointmentForm } from "@/components/appointment-form";
+import { FacilitiesCarousel } from "@/components/facilities-carousel";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { StaffCarousel } from "@/components/staff-carousel";
 import { getLatestPublishedPosts } from "@/lib/data";
-import { facilities, services } from "@/lib/site-data";
+import { services } from "@/lib/site-data";
 
 const serviceIcons = [FirstAidKitIcon, Doctor01Icon, ClinicIcon, HeartCheckIcon, TestTube01Icon, Calendar03Icon];
-const facilityIcons = [AmbulanceIcon, HospitalBed01Icon, Hospital01Icon, MedicineBottle01Icon];
 
 function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -73,25 +69,6 @@ export default async function Home() {
                   <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-7 text-white/85 sm:text-lg">
                     Dependable care, attentive staff, and facilities designed for patient comfort, clarity, and safety.
                   </p>
-                  <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                    <Link href="#appointment" className="rounded-full bg-white px-6 py-4 text-sm font-bold text-ink transition hover:-translate-y-0.5 hover:bg-sky">
-                      <span className="inline-flex items-center gap-2">
-                        Book Appointment
-                        <HugeiconsIcon icon={Calendar03Icon} size={18} strokeWidth={1.8} />
-                      </span>
-                    </Link>
-                    <a href="tel:+919876543210" className="rounded-full border border-white/35 px-6 py-4 text-sm font-bold text-white transition hover:bg-white/10">
-                      <span className="inline-flex items-center gap-2">
-                        Call Now
-                        <HugeiconsIcon icon={ArrowRight02Icon} size={18} strokeWidth={1.8} />
-                      </span>
-                    </a>
-                  </div>
-                </div>
-
-                <div className="absolute bottom-6 left-6 hidden rounded-3xl bg-white p-4 text-ink shadow-xl sm:block">
-                  <p className="text-2xl font-semibold">Patient-first</p>
-                  <p className="mt-1 max-w-52 text-sm text-muted">Clear communication from consultation to recovery.</p>
                 </div>
               </div>
             </div>
@@ -155,23 +132,7 @@ export default async function Home() {
               </div>
               <p className="max-w-md text-sm leading-6 text-muted">A calm environment supported by practical amenities for patients and families.</p>
             </div>
-            <div className="mt-10 grid gap-4 lg:grid-cols-4">
-              {facilities.map((facility, index) => (
-                <article key={facility.title} className="group relative min-h-80 overflow-hidden rounded-[2rem] bg-ink">
-                  <Image src={facility.image} alt={facility.title} width={900} height={1100} className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
-                  <div className="relative flex h-full min-h-80 flex-col justify-between p-5 text-white">
-                    <span className="w-fit rounded-full border border-white/40 bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur">{facility.label}</span>
-                    <div>
-                      <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-medical-blue">
-                        <HugeiconsIcon icon={facilityIcons[index] ?? Hospital01Icon} size={24} strokeWidth={1.7} />
-                      </span>
-                      <h3 className="text-2xl font-semibold tracking-tight">{facility.title}</h3>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <FacilitiesCarousel />
           </div>
         </section>
 
