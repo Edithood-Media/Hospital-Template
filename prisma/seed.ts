@@ -1,15 +1,6 @@
 import bcrypt from "bcryptjs";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import { PrismaClient } from "../src/generated/prisma/client";
 import { doctors, facilities, services } from "../src/lib/site-data";
-
-function getDatabaseUrl() {
-  return process.env.DATABASE_URL ?? "file:./dev.db";
-}
-
-const prisma = new PrismaClient({
-  adapter: new PrismaBetterSqlite3({ url: getDatabaseUrl() }),
-});
+import { closeMongoConnection, ensureMongoIndexes, prisma } from "../src/lib/mongo-data";
 
 const defaultBlogs = [
   {
@@ -52,25 +43,28 @@ async function main() {
   const password = process.env.ADMIN_PASSWORD ?? "change-this-password";
   const name = process.env.ADMIN_NAME ?? "Hospital Admin";
   const passwordHash = await bcrypt.hash(password, 12);
+  await ensureMongoIndexes();
 
-  await prisma.adminUser.upsert({
-    where: { email },
-    update: { name, passwordHash },
-    create: { email, name, passwordHash },
-  });
+  const existingAdmin = await prisma.adminUser.findUnique({ where: { email } });
+  if (existingAdmin) {
+    await prisma.adminUser.update({ where: { email }, data: { name, passwordHash } });
+  } else {
+    await prisma.adminUser.create({ data: { email, name, passwordHash } });
+  }
 
   for (const post of defaultBlogs) {
-    await prisma.blogPost.upsert({
-      where: { slug: post.slug },
-      update: {},
-      create: {
-        ...post,
-        seoTitle: post.title,
-        seoDescription: post.excerpt,
-        status: "PUBLISHED",
-        publishedAt: new Date(),
-      },
-    });
+    const existingPost = await prisma.blogPost.findUnique({ where: { slug: post.slug } });
+    if (!existingPost) {
+      await prisma.blogPost.create({
+        data: {
+          ...post,
+          seoTitle: post.title,
+          seoDescription: post.excerpt,
+          status: "PUBLISHED",
+          publishedAt: new Date(),
+        },
+      });
+    }
   }
 
   const appointmentCount = await prisma.appointment.count();
@@ -134,10 +128,10 @@ async function main() {
 
 main()
   .then(async () => {
-    await prisma.$disconnect();
+    await closeMongoConnection();
   })
   .catch(async (error) => {
     console.error(error);
-    await prisma.$disconnect();
+    await closeMongoConnection();
     process.exit(1);
   });

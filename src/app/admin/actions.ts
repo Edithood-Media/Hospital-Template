@@ -4,9 +4,9 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { BlogStatus } from "@/generated/prisma/enums";
 import { createSession, destroySession, getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { parseRichContent } from "@/lib/rich-content";
 import {
   appointmentStatusSchema,
   blogSchema,
@@ -80,6 +80,7 @@ export async function saveBlogPostAction(
     slug: formValue(formData, "slug") || slugify(title),
     excerpt: formValue(formData, "excerpt"),
     content: formValue(formData, "content"),
+    contentJson: formValue(formData, "contentJson"),
     category: formValue(formData, "category"),
     featuredImage: formValue(formData, "featuredImage"),
     seoTitle: formValue(formData, "seoTitle"),
@@ -92,8 +93,13 @@ export async function saveBlogPostAction(
     return { ok: false, message: "Please complete all required blog fields." };
   }
 
-  const data = result.data;
-  const publishedAt = data.status === BlogStatus.PUBLISHED ? new Date() : null;
+  const { contentJson: contentJsonValue, ...data } = result.data;
+  const contentJson = contentJsonValue ? parseRichContent(contentJsonValue) : null;
+  if (contentJsonValue && !contentJson) {
+    return { ok: false, message: "Blog content includes unsupported or oversized rich elements." };
+  }
+  const contentJsonInput = contentJson ? JSON.parse(JSON.stringify(contentJson)) : null;
+  const publishedAt = data.status === "PUBLISHED" ? new Date() : null;
 
   try {
     if (id) {
@@ -101,6 +107,7 @@ export async function saveBlogPostAction(
         where: { id },
         data: {
           ...data,
+          contentJson: contentJsonInput,
           featuredImage: data.featuredImage || null,
           seoTitle: data.seoTitle || null,
           seoDescription: data.seoDescription || null,
@@ -112,6 +119,7 @@ export async function saveBlogPostAction(
       await prisma.blogPost.create({
         data: {
           ...data,
+          contentJson: contentJsonInput,
           featuredImage: data.featuredImage || null,
           seoTitle: data.seoTitle || null,
           seoDescription: data.seoDescription || null,

@@ -1,25 +1,24 @@
 import "server-only";
 
-import { BlogStatus } from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 import { doctors, facilities, services } from "@/lib/site-data";
 
 export async function getPublishedPosts() {
   return prisma.blogPost.findMany({
-    where: { status: BlogStatus.PUBLISHED },
+    where: { status: "PUBLISHED" },
     orderBy: { publishedAt: "desc" },
   });
 }
 
 export async function getPublishedPostBySlug(slug: string) {
   return prisma.blogPost.findFirst({
-    where: { slug, status: BlogStatus.PUBLISHED },
+    where: { slug, status: "PUBLISHED" },
   });
 }
 
 export async function getLatestPublishedPosts(limit = 3) {
   return prisma.blogPost.findMany({
-    where: { status: BlogStatus.PUBLISHED },
+    where: { status: "PUBLISHED" },
     orderBy: { publishedAt: "desc" },
     take: limit,
   });

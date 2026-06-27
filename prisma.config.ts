@@ -9,6 +9,6 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: process.env["DATABASE_URL"] ?? "mongodb://127.0.0.1:27017/shree-shivaya-hospital",
   },
 });

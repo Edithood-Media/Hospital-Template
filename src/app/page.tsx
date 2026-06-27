@@ -62,7 +62,7 @@ export default async function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-b from-medical-blue/55 via-ink/35 to-ink/75" />
               <div className="relative min-h-[620px] px-5 py-8 text-white sm:px-10 lg:px-14">
-                <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="hidden flex-wrap items-center justify-between gap-4 sm:flex">
                   <div className="flex flex-wrap gap-2">
                     {['24/7 Emergency', 'Diagnostics', 'Patient Rooms'].map((item) => (
                       <span key={item} className="rounded-full border border-white/35 bg-white/10 px-4 py-2 text-xs font-medium backdrop-blur">

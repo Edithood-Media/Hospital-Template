@@ -33,6 +33,7 @@ export const blogSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase words separated by hyphens"),
   excerpt: z.string().trim().min(10, "Excerpt is required").max(320),
   content: z.string().trim().min(20, "Content is required"),
+  contentJson: z.string().trim().max(8 * 1024 * 1024).optional(),
   category: z.string().trim().min(2, "Category is required").max(80),
   featuredImage: z.union([z.string().trim().url(), z.literal("")]).optional(),
   seoTitle: z.string().trim().max(180).optional(),

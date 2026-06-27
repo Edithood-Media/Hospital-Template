@@ -4,7 +4,6 @@ import Link from "next/link";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { BlogStatus } from "@/generated/prisma/enums";
 import { formatDate } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 
@@ -24,7 +23,7 @@ export default async function BlogPage({
 
   const posts = await prisma.blogPost.findMany({
     where: {
-      status: BlogStatus.PUBLISHED,
+      status: "PUBLISHED",
       ...(category ? { category } : {}),
       ...(query
         ? {
@@ -40,7 +39,7 @@ export default async function BlogPage({
   });
 
   const categories = await prisma.blogPost.findMany({
-    where: { status: BlogStatus.PUBLISHED },
+    where: { status: "PUBLISHED" },
     select: { category: true },
     distinct: ["category"],
     orderBy: { category: "asc" },

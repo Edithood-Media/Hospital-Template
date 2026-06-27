@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { BlogStatus } from "@/generated/prisma/enums";
 import { formatDate } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 
@@ -18,8 +17,8 @@ export default async function AdminDashboardPage() {
   ] = await Promise.all([
     prisma.appointment.count(),
     prisma.appointment.count({ where: { status: "NEW" } }),
-    prisma.blogPost.count({ where: { status: BlogStatus.PUBLISHED } }),
-    prisma.blogPost.count({ where: { status: BlogStatus.DRAFT } }),
+    prisma.blogPost.count({ where: { status: "PUBLISHED" } }),
+    prisma.blogPost.count({ where: { status: "DRAFT" } }),
     prisma.service.count(),
     prisma.facility.count(),
     prisma.staffProfile.count(),

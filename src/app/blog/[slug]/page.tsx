@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AppointmentForm } from "@/components/appointment-form";
+import { RichBlogContent } from "@/components/rich-blog-content";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { formatDate, getLatestPublishedPosts, getPublishedPostBySlug } from "@/lib/data";
@@ -39,7 +40,6 @@ export default async function BlogPostPage({
   }
 
   const related = (await getLatestPublishedPosts(4)).filter((item) => item.id !== post.id).slice(0, 3);
-  const paragraphs = post.content.split(/\n+/).filter(Boolean);
 
   return (
     <>
@@ -66,9 +66,7 @@ export default async function BlogPostPage({
         <section className="px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_380px]">
             <div className="max-w-none rounded-[2rem] border border-line bg-background p-8 text-lg leading-8 text-muted sm:p-12">
-              {paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
+              <RichBlogContent contentJson={post.contentJson} fallbackContent={post.content} />
               <div className="mt-10 rounded-[2rem] bg-sky p-6 text-sm leading-6 text-medical-blue">
                 This article is for general awareness and does not replace a consultation with a qualified doctor.
               </div>

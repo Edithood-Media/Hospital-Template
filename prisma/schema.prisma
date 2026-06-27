@@ -1,14 +1,15 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider   = "prisma-client-js"
+  engineType = "binary"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model AdminUser {
-  id           String   @id @default(cuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   email        String   @unique
   passwordHash String
@@ -17,7 +18,7 @@ model AdminUser {
 }
 
 model Appointment {
-  id            String            @id @default(cuid())
+  id            String            @id @default(auto()) @map("_id") @db.ObjectId
   patientName   String
   phone         String
   email         String?
@@ -36,11 +37,12 @@ model Appointment {
 }
 
 model BlogPost {
-  id                String     @id @default(cuid())
+  id                String     @id @default(auto()) @map("_id") @db.ObjectId
   title             String
   slug              String     @unique
   excerpt           String
   content           String
+  contentJson       Json?
   category          String
   featuredImage     String?
   seoTitle          String?
@@ -57,7 +59,7 @@ model BlogPost {
 }
 
 model Service {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   iconKey     String   @default("clinic")
@@ -71,7 +73,7 @@ model Service {
 }
 
 model Facility {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   label     String
   image     String
@@ -86,7 +88,7 @@ model Facility {
 }
 
 model StaffProfile {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   role      String
   detail    String

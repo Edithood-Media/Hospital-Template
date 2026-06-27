@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 
 import { saveBlogPostAction } from "@/app/admin/actions";
+import { RichBlogEditor } from "@/app/admin/(protected)/blogs/rich-blog-editor";
 import { slugify } from "@/lib/validation";
 
 type BlogFormPost = {
@@ -11,6 +12,7 @@ type BlogFormPost = {
   slug: string;
   excerpt: string;
   content: string;
+  contentJson: unknown;
   category: string;
   featuredImage: string | null;
   seoTitle: string | null;
@@ -67,10 +69,10 @@ export function BlogForm({ post }: { post: BlogFormPost }) {
         <textarea name="excerpt" defaultValue={post?.excerpt ?? ""} required rows={3} className="resize-none rounded-2xl border border-line bg-background px-4 py-3 outline-none focus:border-medical-blue" />
       </label>
 
-      <label className="grid gap-1 text-sm font-medium text-ink">
+      <div className="grid gap-1 text-sm font-medium text-ink">
         Content
-        <textarea name="content" defaultValue={post?.content ?? ""} required rows={12} className="resize-y rounded-2xl border border-line bg-background px-4 py-3 outline-none focus:border-medical-blue" />
-      </label>
+        <RichBlogEditor initialContent={post?.content ?? ""} initialContentJson={post?.contentJson ?? null} />
+      </div>
 
       <label className="grid gap-1 text-sm font-medium text-ink">
         Featured image URL
