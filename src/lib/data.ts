@@ -37,10 +37,10 @@ export async function getHomepageServices() {
   const rows = await prisma.service.findMany({
     where: { isVisible: true },
     orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-    select: { id: true, title: true, description: true, iconKey: true, sortOrder: true, isVisible: true },
+    select: { id: true, title: true, description: true, image: true, iconKey: true, sortOrder: true, isVisible: true },
   });
 
-  return rows.length > 0 ? rows : services.map((service, index) => ({ id: service.title, ...service, iconKey: "clinic", sortOrder: index, isVisible: true }));
+  return rows.length > 0 ? rows : services.map((service, index) => ({ id: service.title, ...service, image: null, iconKey: "clinic", sortOrder: index, isVisible: true }));
 }
 
 export async function getHomepageFacilities() {

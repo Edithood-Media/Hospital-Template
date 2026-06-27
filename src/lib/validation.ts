@@ -52,6 +52,7 @@ const booleanFromForm = z.union([z.literal("on"), z.literal("")]).optional();
 export const serviceSchema = z.object({
   title: z.string().trim().min(2, "Title is required").max(120),
   description: z.string().trim().min(8, "Description is required").max(320),
+  image: z.union([z.string().trim().startsWith("data:image/webp;base64,"), z.literal("")]).optional(),
   iconKey: z.string().trim().min(2).max(80),
   sortOrder: z.coerce.number().int().min(0).max(999),
   isVisible: booleanFromForm,

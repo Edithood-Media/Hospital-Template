@@ -62,6 +62,7 @@ model Service {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
+  image       String?
   iconKey     String   @default("clinic")
   sortOrder   Int      @default(0)
   isVisible   Boolean  @default(true)

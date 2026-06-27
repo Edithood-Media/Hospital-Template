@@ -17,6 +17,7 @@
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.2.1",
     "@hugeicons/react": "^1.1.7",
+    "@mongodb-js/saslprep": "^1.4.11",
     "@prisma/client": "^6.19.3",
     "@tiptap/extension-image": "^3.27.1",
     "@tiptap/extension-link": "^3.27.1",

@@ -186,6 +186,7 @@ export async function saveServiceAction(id: string | null, _state: ActionState, 
   const result = serviceSchema.safeParse({
     title: formValue(formData, "title"),
     description: formValue(formData, "description"),
+    image: formValue(formData, "image"),
     iconKey: formValue(formData, "iconKey"),
     sortOrder: formValue(formData, "sortOrder"),
     isVisible: formValue(formData, "isVisible"),
@@ -195,7 +196,7 @@ export async function saveServiceAction(id: string | null, _state: ActionState, 
     return { ok: false, message: "Please complete all required service fields." };
   }
 
-  const data = { ...result.data, isVisible: result.data.isVisible === "on" };
+  const data = { ...result.data, image: result.data.image || null, isVisible: result.data.isVisible === "on" };
 
   if (id) {
     await prisma.service.update({ where: { id }, data });
