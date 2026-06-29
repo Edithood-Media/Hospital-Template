@@ -165,7 +165,7 @@ export default async function Home() {
                     </span>
                     <h3 className={`text-2xl font-semibold tracking-tight ${service.image ? "text-white" : "text-ink"}`}>{service.title}</h3>
                   </div>
-                  <p className={`relative mt-3 text-sm leading-6 ${service.image ? "text-white/80" : "text-muted"}`}>{service.description}</p>
+                  <p className={`relative mt-3 text-sm leading-6 ${service.image ? "font-medium !text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.75)]" : "text-muted"}`}>{service.description}</p>
                 </article>
               ))}
             </div>

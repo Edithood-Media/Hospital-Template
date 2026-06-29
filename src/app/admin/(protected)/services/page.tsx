@@ -47,7 +47,7 @@ export default async function AdminServicesPage() {
               </span>
               <h2 className={`text-2xl font-semibold tracking-tight ${service.image ? "text-white" : "text-ink"}`}>{service.title}</h2>
             </div>
-            <p className={`relative mt-3 min-h-[72px] text-sm leading-6 ${service.image ? "text-white/80" : "text-muted"}`}>{service.description}</p>
+            <p className={`relative mt-3 min-h-[72px] text-sm leading-6 ${service.image ? "font-medium !text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.75)]" : "text-muted"}`}>{service.description}</p>
             <div className={`relative mt-6 flex flex-wrap items-center justify-between gap-3 border-t pt-5 ${service.image ? "border-white/20" : "border-line/70"}`}>
               <div className="flex flex-wrap items-center gap-2">
                 <span className={`rounded-full px-3 py-1 text-xs font-bold ${service.isVisible ? "bg-sky text-medical-blue" : "bg-zinc-100 text-muted"}`}>
