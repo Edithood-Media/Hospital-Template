@@ -33,8 +33,15 @@ function getDatabaseUrl() {
 }
 
 function getDatabaseName() {
-  const url = new URL(getDatabaseUrl());
-  return url.pathname.replace(/^\//, "") || "shree-shivaya-hospital";
+  const databaseUrl = getDatabaseUrl();
+
+  try {
+    const url = new URL(databaseUrl);
+    return url.pathname.replace(/^\//, "") || "shree-shivaya-hospital";
+  } catch {
+    const match = databaseUrl.match(/^[^:]+:\/\/[^/]+\/([^?]+)/);
+    return match?.[1] || "shree-shivaya-hospital";
+  }
 }
 
 const mongoClient = globalForMongo.mongoClient ?? new MongoClient(getDatabaseUrl());
